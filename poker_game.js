@@ -235,3 +235,13 @@ function startPokerGame(sender) {
     const result = pokerGame(sender);
     document.getElementById("result").innerText = result;
 }
+
+// 호감도 명령어 처리
+function handleFavorabilityCommand(sender) {
+    // "호감도" 명령어 입력 시 호감도 10,000 증가
+    if (!userFavorability[sender]) {
+        userFavorability[sender] = 0;  // 사용자 호감도 초기화
+    }
+    userFavorability[sender] += 10000; // 호감도 증가
+    console.log(`${sender}님의 호감도가 10,000 증가하였습니다! 현재 호감도: ${userFavorability[sender]}`);
+}
