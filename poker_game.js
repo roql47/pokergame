@@ -137,12 +137,12 @@ function pokerGame(sender) {
     }
 
     var currentFavorability = userFavorability[sender] || 0;
-    if (currentFavorability < 1000) {
+    if (currentFavorability < 0) {
         return "호감도가 부족합니다. 포커게임을 하려면 최소 1000호감도가 필요합니다.";
     }
 
     // 사용자 호감도 차감
-    userFavorability[sender] -= 1000;
+    userFavorability[sender] -= 0;
 
     var deck = shuffleDeck(createPokerDeck());
     var playerHand = [deck.pop(), deck.pop(), deck.pop(), deck.pop(), deck.pop()]; // 5장 받기
