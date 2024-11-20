@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>포커게임</title>
+</head>
+<body>
+    <h1>포커게임</h1>
+    <button onclick="playPoker()">포커게임 시작</button>
+    <div id="result"></div>
+
+    <script src="poker_game.js"></script>
+    <script>
+        function playPoker() {
+            const sender = "테스트유저"; // 테스트용 사용자 이름
+            const result = pokerGame(sender);
+            document.getElementById("result").innerHTML = `<pre>${result}</pre>`;
+        }
+    </script>
+</body>
+</html>
