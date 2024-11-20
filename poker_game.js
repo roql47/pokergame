@@ -93,7 +93,8 @@ function evaluatePokerHand(hand) {
         }
     }
 
-    var isStraight = uniqueRanks.length === 5 && (Math.max.apply(null, ranks) - Math.min.apply(null, ranks) === 4); // 값 차이 확인
+    var isStraight = uniqueRanks.length === 5 && 
+                     (parseInt(ranks[ranks.length - 1], 10) - parseInt(ranks[0], 10) === 4); // 값 차이 확인
 
     // 족보 판별 순서 변경
     if (isFlush && isStraight && uniqueRanks.indexOf("10") !== -1) return "로얄스트레이트 플러시";
@@ -209,31 +210,28 @@ function save() {
         lastApartmentGameTime: lastApartmentGameTime, // 마지막 아파트게임 참여 시간 저장
         remainingLotteryTickets: remainingLotteryTickets // 남은 복권 수 저장
     };
-    FileStream.saveJson("/storage/emulated/0/ChatBot/database/백업.txt", saveData);
+    localStorage.setItem("pokerGameData", JSON.stringify(saveData)); // 브라우저용 저장
 }
 
 // 데이터 로드 함수
 function load() {
     try {
-        var loadData = JSON.parse(FileStream.read("/storage/emulated/0/ChatBot/database/백업.txt"));
+        var loadData = JSON.parse(localStorage.getItem("pokerGameData"));
         userFavorability = loadData.userFavorability || {};
-        blockedUsers = loadData.blockedUsers || []; // 차단된 사용자 리스트 로드
-        responseEnabled = loadData.responseEnabled !== undefined ? loadData.responseEnabled : true; // 응답 활성화 여부 로드
-        userSeotdaData = loadData.userSeotdaData || {}; // 사용자 섯다 데이터 로드
-        loanData = loadData.loanData || {}; // 대출 데이터 불러오기
-        bombPoints = loadData.bombPoints || 0; // 폭탄 포인트 로드
-        lastApartmentGameTime = loadData.lastApartmentGameTime || {}; // 마지막 아파트게임 참여 시간 로드
-        remainingLotteryTickets = loadData.remainingLotteryTickets || 0; // 남은 복권 수 로드
+        blockedUsers = loadData.blockedUsers || [];
+        responseEnabled = loadData.responseEnabled !== undefined ? loadData.responseEnabled : true;
+        userSeotdaData = loadData.userSeotdaData || {};
+        loanData = loadData.loanData || {};
+        bombPoints = loadData.bombPoints || 0;
+        lastApartmentGameTime = loadData.lastApartmentGameTime || {};
+        remainingLotteryTickets = loadData.remainingLotteryTickets || 0;
     } catch (e) {
-        // 데이터 로드 실패 시 아무것도 초기화하지 않음
+        console.error("데이터 로드 실패:", e);
     }
 }
 
-// 채팅 명령어 처리
-function response(room, msg, sender, isGroupChat, replier) {
-    if (msg.startsWith("포커게임")) {
-        var result = pokerGame(sender);
-        replier.reply(result);
-    }
-    // 추가적인 명령어 처리 구현 가능
+// 게임 시작 버튼 처리
+function startPokerGame(sender) {
+    const result = pokerGame(sender);
+    document.getElementById("result").innerText = result;
 }
